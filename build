@@ -399,11 +399,11 @@ if build "fdk_aac"; then
 fi
 
 if build "av1"; then
-	download "https://aomedia.googlesource.com/aom/+archive/80708309620c178e2f3a03ea452495ec83617079.tar.gz" "av1.tar.gz" "av1"
+	download "https://aomedia.googlesource.com/aom/+archive/refs/tags/v3.8.2.tar.gz" "av1.tar.gz" "av1"
 	cd "$PACKAGES"/av1 || exit
 	mkdir -p "$PACKAGES"/aom_build
 	cd "$PACKAGES"/aom_build || exit
-	execute cmake -DENABLE_TESTS=0 -DCMAKE_INSTALL_PREFIX:PATH="${WORKSPACE}" "$PACKAGES"/av1
+	execute cmake -DENABLE_TESTS=0 -DENABLE_EXAMPLES=0 -DCMAKE_INSTALL_PREFIX="${WORKSPACE}" -DCMAKE_INSTALL_LIBDIR=lib "$PACKAGES"/av1
 	execute make -j $MJOBS
 	execute make install
 	build_done "av1"
@@ -419,12 +419,12 @@ if build "zlib"; then
 fi
 
 if build "openssl"; then
-	download "https://www.openssl.org/source/openssl-3.0.13.tar.gz" "openssl-3.0.13.tar.gz"
-	cd "$PACKAGES"/openssl-3.0.13 || exit
-	execute ./config --prefix="${WORKSPACE}" --openssldir="${WORKSPACE}" --with-zlib-include="${WORKSPACE}"/include/ --with-zlib-lib="${WORKSPACE}"/lib no-shared zlib
-	execute make -j $MJOBS
-	execute make install
-	build_done "openssl"
+        download "https://www.openssl.org/source/openssl-1.1.1s.tar.gz" "openssl-1.1.1s.tar.gz"
+        cd "$PACKAGES"/openssl-1.1.1s || exit
+        execute ./config --prefix="${WORKSPACE}" --openssldir="${WORKSPACE}" --with-zlib-include="${WORKSPACE}"/include/ --with-zlib-lib="${WORKSPACE}"/lib no-shared zlib
+        execute make -j $MJOBS
+        execute make install
+        build_done "openssl"
 fi
 
 if build "srt"; then
