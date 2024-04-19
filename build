@@ -9,6 +9,7 @@ PACKAGES="$CWD/packages"
 WORKSPACE="$CWD/workspace"
 CC=clang
 LDFLAGS="-L${WORKSPACE}/lib -lm"
+LDEXEFLAGS=""
 CFLAGS="-I${WORKSPACE}/include"
 ADDITIONAL_CONFIGURE_OPTIONS=""
 
@@ -453,15 +454,15 @@ CFLAGS="-I$WORKSPACE/include"
 LDFLAGS="-L$WORKSPACE/lib"
 if command -v nvcc > /dev/null ; then
        if build "nv-codec"; then
-               download "https://github.com/FFmpeg/nv-codec-headers/releases/download/n12.1.14.0/nv-codec-headers-12.1.14.0.tar.gz" "nv-codec-headers-12.1.14.0.tar.gz"
-               cd "$PACKAGES"/nv-codec-headers-12.1.14.0 || exit
-               sed -i  "s#PREFIX = /usr/local#PREFIX = ${WORKSPACE}#g" "$PACKAGES"/nv-codec-headers-12.1.14.0/Makefile
+               download "https://github.com/FFmpeg/nv-codec-headers/releases/download/n11.1.5.3/nv-codec-headers-11.1.5.3.tar.gz" "nv-codec-headers-11.1.5.3.tar.gz"
+               cd "$PACKAGES"/nv-codec-headers-11.1.5.3 || exit
+               sed -i  "s#PREFIX = /usr/local#PREFIX = ${WORKSPACE}#g" "$PACKAGES"/nv-codec-headers-11.1.5.3/Makefile
                execute make install
                build_done "nv-codec"
        fi
        CFLAGS="$CFLAGS -I/usr/local/cuda/include"
        LDFLAGS="$LDFLAGS -L/usr/local/cuda/lib64"
-       ADDITIONAL_CONFIGURE_OPTIONS="$ADDITIONAL_CONFIGURE_OPTIONS --enable-cuda-nvcc --enable-cuvid --enable-nvenc --enable-nvdec --enable-libnpp  --enable-cuda-llvm"
+       ADDITIONAL_CONFIGURE_OPTIONS="$ADDITIONAL_CONFIGURE_OPTIONS --enable-cuda-nvcc --enable-cuvid --enable-nvenc --enable-nvdec --enable-libnpp  --enable-cuda-llvm --enable-ffnvcodec"
 fi
 
 build "ffmpeg"
